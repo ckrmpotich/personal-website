@@ -1,0 +1,77 @@
+#name {
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    padding-bottom: 0px;
+}
+.navbar ul {
+    list-style-type: none;
+    background-color: rgb(60, 60, 60);
+    padding: 0px;
+    margin: 0px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;   
+    align-items: center;
+}
+.navbar a {
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+    padding: 10px;
+}
+.navbar a:hover{
+    background-color: rgb(78, 78, 78);
+}
+
+#collin_picture {
+    padding: 10px;
+}
+.graphics{
+    animation: fadeIn 2s ease-in forwards;
+}
+.about{
+    animation: fadeIn 2s ease-in forwards;
+    display: flex;
+    align-items: center;       
+    text-align: center;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.about p {
+    margin: 0;
+    overflow-wrap: break-word;
+    max-width: 800px;
+    border-radius: 2px;
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+    padding: 5px;
+}
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+body {
+    background-color: lightgray;
+}
+
+@media (max-width: 600px) {
+    .about {
+        justify-content: center; 
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+}
+
+@media (min-width: 600px) {
+    .about {
+        justify-content: space-evenly; 
+        flex-direction: row;
+        align-items: center;
+    }
+}

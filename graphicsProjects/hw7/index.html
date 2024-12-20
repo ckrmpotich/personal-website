@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Movable Pyramid + Redlight</title>
+  </head>
+
+  <body>
+    <script id="vertexShader" type="not-js">
+      attribute vec3 vPosition; // position of vertex
+      attribute vec3 vNormal;   // normal of vertex
+      attribute vec3 vColor;    // color of vertex
+      varying vec3 fPosition; // for passing position to fragment shader
+      varying vec3 fColor;  // for passing color to fragment shader
+      varying vec3 fNormal; // for passing normal to fragment shader
+      uniform mat4 uMV;     // model view matrix
+      uniform mat4 uMVP;    // model view projection matrix
+
+      void main(void) {
+        gl_Position = uMVP * vec4(vPosition, 1.0);
+        fPosition = (uMV * vec4(vPosition, 1.0)).xyz; // In camera coordinates
+        fColor = vColor;
+        fNormal = vNormal;                            // In local coordinates
+     }
+    </script>
+
+    <script id="fragmentShader" type="not-js">
+      precision highp float;
+
+      varying vec3 fPosition;   // for receiving position from vertex shader
+      varying vec3 fColor;      // for receiving color from vertex shader
+      varying vec3 fNormal;     // for receiving normal from vertex shader
+      
+      uniform mat4 uMV;         // model view matrix
+      uniform mat3 uMVn;        // model view normal matrix
+
+      const vec3  lightV    = vec3(0.0,1.0,1.0); // light direction (world coordinates)
+      const float lightI    = 1.0;               // light intensity (for diffuse only)
+      const float ambientC  = 0.15;              // ambient coefficient
+      const float diffuseC  = 0.5;               // diffuse coefficient
+      const float specularC = 0.9;               // specular coefficient
+      const float specularE = 50.0;              // specular exponent
+      const vec3  lightCol  = vec3(1.0, 0.0, 0.0);  // light color
+
+      vec2 blinnPhongDir(vec3 lightDir, vec3 n, float lightInt, float Ka,
+        float Kd, float Ks, float shininess) {
+        
+        vec3 s = normalize(lightDir);   // normalized light direction vector
+        vec3 v = normalize(-fPosition); // normalized negative position vector
+        vec3 h = normalize(v + s);    // halfway vector
+        float diffuse = Ka + Kd * lightInt * max(0.0, dot(n, s));   // calculate ambient + diffuse
+        float spec =  Ks * pow(max(0.0, dot(n, h)), shininess);     // calculate specular
+        return vec2(diffuse, spec);
+      }
+
+      void main(void) {
+        vec3 n = normalize(uMVn * fNormal);
+        vec3 ColorS  = blinnPhongDir(lightV, n, 0.0, 0.0, 0.0, specularC, specularE).y * lightCol;  // specular
+        vec3 ColorAD = blinnPhongDir(lightV, n, lightI, ambientC, diffuseC, 0.0, 1.0).x * fColor;   // ambient & diffuse
+        gl_FragColor = vec4(ColorAD + ColorS, 1.0);
+      }
+    </script>
+
+    <canvas id="mycanvas" width="500" height="500"></canvas>
+    <br>
+    <input id="slider1" type="range" min="-1" max="1" step="0.01"/>
+    <input id="slider2" type="range" min="-1" max="2" step="0.01"/>
+    <input id="slider3" type="range" min="-1" max="1" step="0.01"/>
+    <script type="text/javascript" src="gl-matrix-min.js"></script>
+    <script src="hw7.js" id="module"></script>
+  </body>
+</html>

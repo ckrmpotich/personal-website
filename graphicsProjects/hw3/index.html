@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Homework 3</title>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="800" height="400" style="margin-left:300px; margin-top: 50px;"></canvas>
+    </br>
+    <label for="slider1">Horizontal Movement: </label>
+    <input type="range" id="slider1" min="0" max="700"></input>
+    </br>
+    <label for="slider2">Vertical Movement: </label>
+    <input type="range" id="slider2" min="0" max="300"></input>
+    </br>
+    <label for="slider3">Angle of Prongs: </label>
+    <input type="range" id="slider3" min="0.4" max="2" step="0.1"></input>
+    </br>
+    <p>Pick up all the triangles. Move horizontal with slider or left/right arrows. Move vertical with up/down arrows. Adjust angle of prongs with a/s keys.</p>
+    <script type="text/javascript" src="gl-matrix-min.js"></script>
+    <script src="hw3.js" id="module"></script>
+  </body>
+</html>
